@@ -37,6 +37,7 @@ COPY . .
 
 # Command to run the application
 # This example uses gunicorn, a common choice for production.
-# Replace 'app:app' with 'your_main_file:your_flask_or_fastapi_app_instance'.
-# The app will be available on port 8000 inside the container.
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+# The --workers flag is set to 4 as a sensible default for production.
+# This allows Gunicorn to handle multiple requests concurrently.
+# Adjust this value based on your EC2 instance's CPU cores.
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8000", "app:app"]

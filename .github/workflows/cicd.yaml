@@ -37,7 +37,7 @@ jobs:
       - name: Build, tag, and push nginx image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPO_NGINX }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO_NGINX }} # IMPORTANT: This secret must be set in the GitHub repository settings.
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -f ./nginx/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ./nginx
