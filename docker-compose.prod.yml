@@ -4,8 +4,9 @@ services:
     image: ${APP_IMAGE_URI}
     container_name: sociology-chatbot
     restart: unless-stopped
-    env_file:
-      - ./.env # Assumes a .env file with secrets exists on the EC2 host
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - HUGGINGFACEHUB_API_TOKEN=${HUGGINGFACEHUB_API_TOKEN}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000"]
       interval: 30s
