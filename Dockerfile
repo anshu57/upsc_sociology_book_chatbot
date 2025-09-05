@@ -26,14 +26,20 @@ RUN pip install --no-cache-dir -r requirements.txt
 # This is the final image that will be run
 FROM base as final
 
+# Create a non-root user and group to run the application for better security
+RUN addgroup --system app && adduser --system --group app
+
 # Copy the installed dependencies from the builder stage
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 # Also copy the executables (like gunicorn) from the builder stage
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Copy the application code
-COPY . .
+# Copy the application code, changing ownership to the new user
+COPY --chown=app:app . .
+
+# Switch to the non-root user
+USER app
 
 # Command to run the application
 # This example uses gunicorn, a common choice for production.

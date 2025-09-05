@@ -1,0 +1,15 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+
+# Local development artifacts
+certs/
+venv/
+*.md
