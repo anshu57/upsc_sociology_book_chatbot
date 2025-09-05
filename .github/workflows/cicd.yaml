@@ -62,6 +62,11 @@ jobs:
       - name: Checkout code on runner
         uses: actions/checkout@v4
 
+      - name: Clean up Docker resources
+        run: |
+          echo "Pruning Docker to free up disk space before deployment..."
+          docker system prune -af
+
       - name: Deploy or Update Application Stack
         env:
           APP_IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPO }}:latest

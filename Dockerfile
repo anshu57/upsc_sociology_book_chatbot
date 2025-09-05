@@ -20,6 +20,8 @@ FROM base as builder
 # Copy the requirements file and install dependencies
 # This is done in a separate layer to leverage Docker's caching mechanism.
 COPY requirements.txt .
+# First, install the CPU-only version of torch to significantly reduce image size.
+RUN pip install --no-cache-dir torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ---- Final Stage ----
