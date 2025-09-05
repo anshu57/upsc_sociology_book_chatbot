@@ -8,7 +8,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from src.prompt import *
 import os
-from IPython.display import Markdown
 
 app = Flask(__name__)
 
