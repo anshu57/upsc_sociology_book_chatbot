@@ -11,15 +11,13 @@ import os
 app = Flask(__name__)
 
 
+# load_dotenv() is perfect for local development. In production, docker-compose's
+# `env_file` handles this, so the variables are always available in the environment.
 load_dotenv()
 
-PINECONE_API_KEY=os.environ.get('PINECONE_API_KEY')
-HUGGINGFACEHUB_API_TOKEN=os.environ.get('HUGGINGFACEHUB_API_TOKEN')
 
-os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACEHUB_API_TOKEN
-
-
+# The LangChain and Pinecone libraries will automatically find their respective
+# API keys (e.g., 'PINECONE_API_KEY') from the environment variables.
 embeddings = download_hugging_face_embeddings()
 
 index_name = "upsc-sociology-chatbot" 
@@ -70,4 +68,4 @@ def chat():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port= 8080, debug= True)
+    app.run(host="0.0.0.0", port= 8000, debug= True)

@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sociology-chatbot
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - chatbot-network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: sociology-chatbot-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Mount the self-signed certs we created
+      - ./certs:/etc/ssl/certs:ro
+    networks:
+      - chatbot-network
+    depends_on:
+      app:
+        condition: service_healthy
+
+networks:
+  chatbot-network:
+    driver: bridge

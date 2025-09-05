@@ -1,0 +1,32 @@
+services:
+  app:
+    # The image will be specified by an environment variable in the CI/CD runner
+    image: ${APP_IMAGE_URI}
+    container_name: sociology-chatbot
+    restart: unless-stopped
+    env_file:
+      - ./.env # Assumes a .env file with secrets exists on the EC2 host
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - chatbot-network
+
+  nginx:
+    # The image will be specified by an environment variable in the CI/CD runner
+    image: ${NGINX_IMAGE_URI}
+    container_name: sociology-chatbot-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - chatbot-network
+    depends_on:
+      app:
+        condition: service_healthy
+
+networks:
+  chatbot-network:
+    driver: bridge
