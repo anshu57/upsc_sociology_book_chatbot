@@ -6,8 +6,6 @@
 __pycache__/
 *.pyc
 
-# Environment files
-.env
 
 # Local development artifacts
 certs/
